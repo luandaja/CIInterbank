@@ -53,6 +53,8 @@ namespace Interbank.Models
 
         public double val_deuda { get; set; }
         public double val_CuotaIncial { get; set; }
+        public double val_CuotaFinal { get; set; }
+
         //public double val_SeguroDesgravamen { get; set; }
         //public double val_SeguroVehicular { get; set; }
         public int NCuotas { get; set; }
@@ -60,6 +62,7 @@ namespace Interbank.Models
         public float por_CuotaIncial { get; set; }
         public float por_SeguroDesgravamen { get; set; }
         public float por_SeguroVehicular { get; set; }
+        public float por_cuotaFinal { get; set; }
 
         public float tea { get; set; }
         public float ted { get; set; }

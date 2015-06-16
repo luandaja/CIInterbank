@@ -9,81 +9,64 @@
 
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.plazo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tipoSeguro)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tipoCuotaIncial)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.montoDelCredito)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.importeAsegurado)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.val_CuotaIncial)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NCuotas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.por_CuotaIncial)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.por_SeguroDesgravamen)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.por_SeguroVehicular)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tea)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ted)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tem)
-        </th>
-        <th></th>
+        <th>Cuota</th>
+        <th>Fecha</th>
+        <th>Saldo</th>
+        <th>Amoritzacion</th>
+        <th>Interes</th>
+        <th>Seguro Desgrvamen</th>
+        <th>Seguro Vehiculo</th>
+        <th>Comisiones</th>
+        <th>Cuota</th>
     </tr>
     @{ 
         SimuladorsController con = (SimuladorsController)this.ViewContext.Controller;
         DateTime fecha = DateTime.Now;
-        fecha = fecha.AddMonths(1);
-        double saldo =Model.deuda;
+        double saldo =Model.val_deuda + Model.val_CuotaFinal;
         double interes ;
+        int diasMes;
+        double segDesg;
+        float comision = 10;
+        double cuota;
+        double amortizacion;
     }
-    @for (int i = 0; i < Model.NCuotas + 2; i++)
+    @for (int i = 1; i < Model.NCuotas + 2; i++)
 
     {
         {
-          //  saldo = con.
-        
+            fecha = fecha.AddMonths(1);
+            diasMes = DateTime.DaysInMonth(fecha.Year, fecha.Month);
+            interes = con.calcularInteresMensual(Model, diasMes, saldo);
+            segDesg = con.calcularSeguroDesgMensual(Model, diasMes, saldo);
+            if (i == Model.NCuotas + 1)
+            {
+                cuota = Model.montoDelCredito * Model.por_cuotaFinal;
+                amortizacion = saldo;
+            }
+            else
+            {
+                cuota = con.calcularAnualidad(Model, diasMes) + comision +/* con.ajustarAnualidad(Model,diasMes)+*/segDesg;
+                amortizacion = cuota - interes;
+
+            }
+            //  saldo = con.
+
+
         }
         <tr>
             <td>@i</td>
             <td>@fecha</td>
-            <td>@saldo</td>
-            <td>amortización</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.SimuladorID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.SimuladorID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.SimuladorID })
-            </td>
+            <td>@Math.Round(saldo, 2)</td>
+            <td>@Math.Round(amortizacion, 2)</td>
+            <td>@Math.Round(interes, 2)</td>
+            <td>@Math.Round(segDesg, 2)</td>
+            <td>0.00</td>
+            <td>@Math.Round(comision, 2)</td>
+            <td>@Math.Round(cuota, 2)</td>
         </tr>
+        {
+            saldo = saldo - amortizacion;
+        }
     }
 
 </table>

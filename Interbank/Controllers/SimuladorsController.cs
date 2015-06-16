@@ -172,33 +172,44 @@ namespace Interbank.Controllers
             //s.por_CuotaIncial
             //s.por_SeguroDesgravamen
             //s.por_SeguroVehicular
-            s.tea = 10.99f / 100;
-            s.ted = (float)Math.Pow(1 + s.tea, 1 / nroDias) - 1;
+            s.tea = 13.50f / 100;
+            s.ted = (float)Math.Pow(1 + s.tea, 1 / (float)nroDias) - 1;
             //s.tem
-            s.val_deuda = s.montoDelCredito - s.val_CuotaIncial;
-            
+            s.por_cuotaFinal = 0.50f;
+            s.val_CuotaFinal = s.por_cuotaFinal * s.montoDelCredito;
+            s.val_deuda = s.montoDelCredito - s.val_CuotaIncial -s.val_CuotaFinal;
+
+
         }
         public float calcularTEM (Simulador s, int diasMes)
         {
             return (float)Math.Pow(1 + s.ted, diasMes) - 1;
         }
-        public double calcularInteresMensual(Simulador s, int diasMes)
+        public double calcularInteresMensual(Simulador s, int diasMes, double monto)
         {
             float tasa = calcularTEM(s, diasMes);
-            return s.montoDelCredito * tasa;
+            return (monto)* tasa;
         }
-        public double calcularSeguroDesgMensual(Simulador s, int diasMes)
+        public double calcularSeguroDesgMensual(Simulador s, int diasMes, double monto)
         {
-            return s.montoDelCredito * s.por_SeguroDesgravamen * diasMes /30;
+            return (monto) * s.por_SeguroDesgravamen * diasMes /30;
         }
         public double calcularSeguroVehiMensual(Simulador s, int diasMes)
         {
             return s.por_SeguroVehicular/12  * s.importeAsegurado;
         }
-        //public double calcularAnualidad(Simulador s)
-        //{
-        //    //return 
-        //}
+        public double calcularAnualidad(Simulador s, int diasMes)
+        {
+            float tasa = calcularTEM(s, diasMes) + s.por_SeguroDesgravamen;
+            return (s.montoDelCredito*s.por_cuotaFinal*(1-s.por_CuotaIncial))* tasa / (1 - Math.Pow(1 + tasa, -s.NCuotas));
+
+        }
+        public double ajustarAnualidad(Simulador s, int diasMes)
+        {
+            float tasa = calcularTEM(s, diasMes)+ s.por_SeguroDesgravamen;
+            float tasa2 = (float)tasa / (float)(1 - Math.Pow(1 + tasa, -s.NCuotas));
+            return (s.montoDelCredito * s.por_cuotaFinal * (1 - s.por_CuotaIncial)) * tasa2 / nroDias;
+        }
 
     }
 
