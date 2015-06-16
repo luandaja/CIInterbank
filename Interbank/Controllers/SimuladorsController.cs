@@ -176,6 +176,7 @@ namespace Interbank.Controllers
             s.ted = (float)Math.Pow(1 + s.tea, 1 / nroDias) - 1;
             //s.tem
             s.val_deuda = s.montoDelCredito - s.val_CuotaIncial;
+            
         }
         public float calcularTEM (Simulador s, int diasMes)
         {

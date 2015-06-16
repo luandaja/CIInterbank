@@ -54,13 +54,15 @@
         SimuladorsController con = (SimuladorsController)this.ViewContext.Controller;
         DateTime fecha = DateTime.Now;
         fecha = fecha.AddMonths(1);
-        double saldo = Model.montoDelCredito - Model.val_CuotaIncial;
+        double saldo =Model.deuda;
+        double interes ;
     }
     @for (int i = 0; i < Model.NCuotas + 2; i++)
 
     {
         {
           //  saldo = con.
+        
         }
         <tr>
             <td>@i</td>
