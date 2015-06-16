@@ -1,0 +1,87 @@
+﻿@model Interbank.Models.Simulador
+@using Interbank.Controllers
+@{
+    ViewBag.Title = "Cronograma";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Cronograma</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.plazo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tipoSeguro)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tipoCuotaIncial)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.montoDelCredito)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.importeAsegurado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.val_CuotaIncial)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NCuotas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.por_CuotaIncial)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.por_SeguroDesgravamen)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.por_SeguroVehicular)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tea)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ted)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tem)
+        </th>
+        <th></th>
+    </tr>
+    @{ 
+        SimuladorsController con = (SimuladorsController)this.ViewContext.Controller;
+        DateTime fecha = DateTime.Now;
+        fecha = fecha.AddMonths(1);
+        double saldo = Model.montoDelCredito - Model.val_CuotaIncial;
+    }
+    @for (int i = 0; i < Model.NCuotas + 2; i++)
+
+    {
+        {
+          //  saldo = con.
+        }
+        <tr>
+            <td>@i</td>
+            <td>@fecha</td>
+            <td>@saldo</td>
+            <td>amortización</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.SimuladorID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.SimuladorID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.SimuladorID })
+            </td>
+        </tr>
+    }
+
+</table>
