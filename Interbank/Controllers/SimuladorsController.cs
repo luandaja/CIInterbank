@@ -10,6 +10,7 @@ using Interbank.Models;
 
 namespace Interbank.Controllers
 {
+    [Authorize]
     public class SimuladorsController : Controller
     {
         private SimuladorContext db = new SimuladorContext();
