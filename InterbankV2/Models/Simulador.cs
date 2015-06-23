@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.EntityClient;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 
-namespace Interbank.Models
+namespace InterbankV2.Models
 {
     #region Colecciones 
     public enum Cuotas
@@ -53,7 +54,7 @@ namespace Interbank.Models
 
         [Required]
         [Display(Name = "Monto del crédito")]
-        [Range(18000,240000,ErrorMessage = "El valor debe estar entre 18M y 240M")]
+        [Range(18000, 240000, ErrorMessage = "El valor debe estar entre 18M y 240M")]
         public double montoDelCredito { get; set; }
 
         [Display(Name = "Monto asegurado")]
@@ -84,17 +85,8 @@ namespace Interbank.Models
         [Display(Name = "TEM")]
         public float tem { get; set; }
 
-        //[ForeignKey("usuario")]
-        //public string ApplicationUserRefKey { get; set; }
-        public virtual ApplicationUser usuario { get; set; }
-    }
-    public class SimuladorsContext : DbContext
-    {
-        public SimuladorsContext()
-            :base("DefaultConnection")
-        {
-
-        }
-        public DbSet<Simulador> Simuladores { get; set; }
+        [ForeignKey("cliente")]
+        public int IdCliente { get; set; }
+        public virtual Usuario cliente { get; set; }
     }
 }

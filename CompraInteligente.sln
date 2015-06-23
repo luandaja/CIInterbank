@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interbank", "Interbank\Interbank.csproj", "{2CD9B353-B0A4-4460-AD65-672F90B83F57}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{C010A2C3-B10F-4BD7-97DE-6FD1DB3E234B}"
 	ProjectSection(SolutionItems) = preProject
 		PublishScripts\AzureWebsitePublishModule.psm1 = PublishScripts\AzureWebsitePublishModule.psm1
@@ -16,16 +14,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configura
 		PublishScripts\Configurations\Interbank-WAWS-dev.json = PublishScripts\Configurations\Interbank-WAWS-dev.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterbankV2", "InterbankV2\InterbankV2.csproj", "{2A43525B-20EB-4C21-8425-00DC65DB842A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers", "..\..\..\..\Downloads\Creating_a_custom_user_login_form-noexe (1)\Helpers\Helpers.csproj", "{9AF35335-F1F3-41A0-ABD2-B843B91B2E86}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2CD9B353-B0A4-4460-AD65-672F90B83F57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2CD9B353-B0A4-4460-AD65-672F90B83F57}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2CD9B353-B0A4-4460-AD65-672F90B83F57}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2CD9B353-B0A4-4460-AD65-672F90B83F57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A43525B-20EB-4C21-8425-00DC65DB842A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A43525B-20EB-4C21-8425-00DC65DB842A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A43525B-20EB-4C21-8425-00DC65DB842A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A43525B-20EB-4C21-8425-00DC65DB842A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AF35335-F1F3-41A0-ABD2-B843B91B2E86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AF35335-F1F3-41A0-ABD2-B843B91B2E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AF35335-F1F3-41A0-ABD2-B843B91B2E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AF35335-F1F3-41A0-ABD2-B843B91B2E86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

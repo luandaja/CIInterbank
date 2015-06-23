@@ -1,0 +1,161 @@
+﻿@model InterbankV2.Models.Simulador
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Simulador</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.cliente.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cliente.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.plazo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.plazo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tipoSeguro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tipoSeguro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tipoCuotaIncial)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tipoCuotaIncial)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.montoDelCredito)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.montoDelCredito)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.importeAsegurado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.importeAsegurado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.val_deuda)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.val_deuda)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.val_CuotaIncial)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.val_CuotaIncial)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.val_CuotaFinal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.val_CuotaFinal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NCuotas)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NCuotas)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.por_CuotaIncial)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.por_CuotaIncial)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.por_SeguroDesgravamen)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.por_SeguroDesgravamen)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.por_SeguroVehicular)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.por_SeguroVehicular)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.por_cuotaFinal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.por_cuotaFinal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tea)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tea)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tem)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tem)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

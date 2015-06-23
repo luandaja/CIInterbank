@@ -1,26 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Interbank.Models;
+using InterbankV2.Models;
 
-namespace Interbank.Controllers
+namespace InterbankV2.Controllers
 {
-    [Authorize]
     public class SimuladorsController : Controller
     {
-        private SimuladorsContext db = new SimuladorsContext();
+        private UsuariosContext db = new UsuariosContext();
         private int nroDias = 360;
         // GET: Simuladors
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
-            return View(db.Simuladores.ToList());
+            var simuladors = db.Simuladors.ToList().FindAll(x=>x.IdCliente == id);
+            ViewBag.id = id;
+            return View(simuladors.ToList());
         }
 
+        public ActionResult Cronograma(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Simulador simulador = db.Simuladors.Find(id);
+            if (simulador == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.IdCliente = new SelectList(db.Usuarios, "Id", "UserName", simulador.IdCliente);
+            return View(simulador);
+        }
         // GET: Simuladors/Details/5
         public ActionResult Details(int? id)
         {
@@ -28,7 +42,7 @@ namespace Interbank.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Simulador simulador = db.Simuladores.Find(id);
+            Simulador simulador = db.Simuladors.Find(id);
             if (simulador == null)
             {
                 return HttpNotFound();
@@ -37,53 +51,45 @@ namespace Interbank.Controllers
         }
 
         // GET: Simuladors/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
+            ViewBag.IdCliente = id;
             return View();
         }
-        public ActionResult Cronograma(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Simulador simulador = db.Simuladores.Find(id);
-            if (simulador == null)
-            {
-                return HttpNotFound();
-            }
-            return View(simulador);
-        }
+
         // POST: Simuladors/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SimuladorID,plazo,tipoSeguro,tipoCuotaIncial,montoDelCredito,importeAsegurado,val_CuotaIncial,NCuotas,por_CuotaIncial,por_SeguroDesgravamen,por_SeguroVehicular,tea,ted,tem")] Simulador simulador)
+        public ActionResult Create([Bind(Include = "SimuladorID,plazo,tipoSeguro,tipoCuotaIncial,montoDelCredito,importeAsegurado,val_deuda,val_CuotaIncial,val_CuotaFinal,NCuotas,por_CuotaIncial,por_SeguroDesgravamen,por_SeguroVehicular,por_cuotaFinal,tea,ted,tem,IdCliente")] Simulador simulador)
         {
-            calcularValoresImplicitos(simulador);
             if (ModelState.IsValid)
             {
-                db.Simuladores.Add(simulador);
+                calcularValoresImplicitos(simulador);
+                db.Simuladors.Add(simulador);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = simulador.IdCliente });
             }
+
+            ViewBag.IdCliente = new SelectList(db.Usuarios, "Id", "UserName", simulador.IdCliente);
 
             return View(simulador);
         }
 
         // GET: Simuladors/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, int idC)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Simulador simulador = db.Simuladores.Find(id);
+            Simulador simulador = db.Simuladors.Find(id);
             if (simulador == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.IdCliente = idC;
             return View(simulador);
         }
 
@@ -92,15 +98,18 @@ namespace Interbank.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "SimuladorID,plazo,tipoSeguro,tipoCuotaIncial,montoDelCredito,importeAsegurado,val_CuotaIncial,NCuotas,por_CuotaIncial,por_SeguroDesgravamen,por_SeguroVehicular,tea,ted,tem")] Simulador simulador)
+        public ActionResult Edit([Bind(Include = "SimuladorID,plazo,tipoSeguro,tipoCuotaIncial,montoDelCredito,importeAsegurado,val_deuda,val_CuotaIncial,val_CuotaFinal,NCuotas,por_CuotaIncial,por_SeguroDesgravamen,por_SeguroVehicular,por_cuotaFinal,tea,ted,tem,IdCliente")] Simulador simulador)
         {
-            calcularValoresImplicitos(simulador);
             if (ModelState.IsValid)
             {
+                calcularValoresImplicitos(simulador);
+
                 db.Entry(simulador).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = simulador.IdCliente });
+
             }
+            ViewBag.IdCliente = new SelectList(db.Usuarios, "Id", "UserName", simulador.IdCliente);
             return View(simulador);
         }
 
@@ -111,7 +120,7 @@ namespace Interbank.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Simulador simulador = db.Simuladores.Find(id);
+            Simulador simulador = db.Simuladors.Find(id);
             if (simulador == null)
             {
                 return HttpNotFound();
@@ -124,10 +133,11 @@ namespace Interbank.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Simulador simulador = db.Simuladores.Find(id);
-            db.Simuladores.Remove(simulador);
+            Simulador simulador = db.Simuladors.Find(id);
+            db.Simuladors.Remove(simulador);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { id = simulador.IdCliente });
+
         }
 
         protected override void Dispose(bool disposing)
@@ -138,6 +148,7 @@ namespace Interbank.Controllers
             }
             base.Dispose(disposing);
         }
+
         private void calcularValoresImplicitos(Simulador s)
         {
             if (s.plazo == Cuotas.meses24)
@@ -148,7 +159,7 @@ namespace Interbank.Controllers
             {
                 s.NCuotas = 36;
             }
-            if(s.tipoSeguro == TipoSeguro.Individual)
+            if (s.tipoSeguro == TipoSeguro.Individual)
             {
                 s.por_SeguroDesgravamen = 0.035f / 100;
             }
@@ -156,7 +167,7 @@ namespace Interbank.Controllers
             {
                 s.por_SeguroDesgravamen = 0.065f / 100;
             }
-            if(s.tipoCuotaIncial == TipoCuotaIncial.por20)
+            if (s.tipoCuotaIncial == TipoCuotaIncial.por20)
             {
                 s.por_CuotaIncial = 0.20f;
             }
@@ -178,40 +189,38 @@ namespace Interbank.Controllers
             //s.tem
             s.por_cuotaFinal = 0.50f;
             s.val_CuotaFinal = s.por_cuotaFinal * s.montoDelCredito;
-            s.val_deuda = s.montoDelCredito - s.val_CuotaIncial -s.val_CuotaFinal;
+            s.val_deuda = s.montoDelCredito - s.val_CuotaIncial - s.val_CuotaFinal;
 
 
         }
-        public float calcularTEM (Simulador s, int diasMes)
+        public float calcularTEM(Simulador s, int diasMes)
         {
             return (float)Math.Pow(1 + s.ted, diasMes) - 1;
         }
         public double calcularInteresMensual(Simulador s, int diasMes, double monto)
         {
             float tasa = calcularTEM(s, diasMes);
-            return (monto)* tasa;
+            return (monto) * tasa;
         }
         public double calcularSeguroDesgMensual(Simulador s, int diasMes, double monto)
         {
-            return (monto) * s.por_SeguroDesgravamen * diasMes /30;
+            return (monto) * s.por_SeguroDesgravamen * diasMes / 30;
         }
         public double calcularSeguroVehiMensual(Simulador s, int diasMes)
         {
-            return s.por_SeguroVehicular/12  * s.importeAsegurado;
+            return s.por_SeguroVehicular / 12 * s.importeAsegurado;
         }
         public double calcularAnualidad(Simulador s, int diasMes)
         {
             float tasa = calcularTEM(s, diasMes) + s.por_SeguroDesgravamen;
-            return (s.montoDelCredito*s.por_cuotaFinal*(1-s.por_CuotaIncial))* tasa / (1 - Math.Pow(1 + tasa, -s.NCuotas));
+            return (s.montoDelCredito * s.por_cuotaFinal * (1 - s.por_CuotaIncial)) * tasa / (1 - Math.Pow(1 + tasa, -s.NCuotas));
 
         }
         public double ajustarAnualidad(Simulador s, int diasMes)
         {
-            float tasa = calcularTEM(s, diasMes)+ s.por_SeguroDesgravamen;
+            float tasa = calcularTEM(s, diasMes) + s.por_SeguroDesgravamen;
             float tasa2 = (float)tasa / (float)(1 - Math.Pow(1 + tasa, -s.NCuotas));
             return (s.montoDelCredito * s.por_cuotaFinal * (1 - s.por_CuotaIncial)) * tasa2 / nroDias;
         }
-
     }
-
 }

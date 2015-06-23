@@ -1,0 +1,86 @@
+﻿@model IEnumerable<InterbankV2.Models.Simulador>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Crear nueva simulación", "Create", new { id = ViewBag.id})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.plazo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tipoSeguro)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tipoCuotaIncial)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.montoDelCredito)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.val_CuotaIncial)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NCuotas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.por_CuotaIncial)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.por_SeguroDesgravamen)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tea)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.plazo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tipoSeguro)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tipoCuotaIncial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.montoDelCredito)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.val_CuotaIncial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NCuotas)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.por_CuotaIncial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.por_SeguroDesgravamen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tea)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.SimuladorID, idC = ViewBag.id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.SimuladorID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.SimuladorID }) |
+                @Html.ActionLink("Cronograma", "Cronograma", new { id = item.SimuladorID })
+
+
+            </td>
+        </tr>
+    }
+
+</table>
