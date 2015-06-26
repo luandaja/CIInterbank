@@ -17,7 +17,7 @@ namespace InterbankV2.Controllers
         public ActionResult Index(int id)
         {
             var simuladors = db.Simuladors.ToList().FindAll(x=>x.IdCliente == id);
-            ViewBag.id = id;
+            ViewBag.IdCliente = id;
             return View(simuladors.ToList());
         }
 
@@ -69,7 +69,7 @@ namespace InterbankV2.Controllers
                 calcularValoresImplicitos(simulador);
                 db.Simuladors.Add(simulador);
                 db.SaveChanges();
-                return RedirectToAction("Index", new { id = simulador.IdCliente });
+                return RedirectToAction("Cronograma", new { id = simulador.SimuladorID});
             }
 
             ViewBag.IdCliente = new SelectList(db.Usuarios, "Id", "UserName", simulador.IdCliente);
@@ -213,7 +213,8 @@ namespace InterbankV2.Controllers
         public double calcularAnualidad(Simulador s, int diasMes)
         {
             float tasa = calcularTEM(s, diasMes) + s.por_SeguroDesgravamen;
-            return (s.montoDelCredito * s.por_cuotaFinal * (1 - s.por_CuotaIncial)) * tasa / (1 - Math.Pow(1 + tasa, -s.NCuotas));
+            double monto = s.val_deuda;
+            return (monto * (1 - s.por_CuotaIncial)) * tasa / (1 - Math.Pow(1 + tasa, -s.NCuotas));
 
         }
         public double ajustarAnualidad(Simulador s, int diasMes)

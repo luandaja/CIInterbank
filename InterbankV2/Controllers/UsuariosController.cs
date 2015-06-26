@@ -83,7 +83,7 @@ namespace InterbankV2.Controllers
             {
                 db.Usuarios.Add(usuario);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Login");
             }
 
             return View(usuario);

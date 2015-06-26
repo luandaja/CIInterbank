@@ -54,7 +54,7 @@ namespace InterbankV2.Models
 
         [Required]
         [Display(Name = "Monto del crédito")]
-        [Range(18000, 240000, ErrorMessage = "El valor debe estar entre 18M y 240M")]
+        [Range(18000, 240000, ErrorMessage = "El valor debe estar entre 18 mil y 240 mil")]
         public double montoDelCredito { get; set; }
 
         [Display(Name = "Monto asegurado")]

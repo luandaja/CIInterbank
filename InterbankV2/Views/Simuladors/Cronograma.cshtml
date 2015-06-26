@@ -7,18 +7,20 @@
 
 <h2>Cronograma</h2>
 
-<table class="table">
-    <tr>
-        <th>Cuota</th>
-        <th>Fecha</th>
-        <th>Saldo</th>
-        <th>Amoritzacion</th>
-        <th>Interes</th>
-        <th>Seguro Desgrvamen</th>
-        <th>Seguro Vehiculo</th>
-        <th>Comisiones</th>
-        <th>Cuota</th>
-    </tr>
+<table class="responsive-table">
+    <thead>
+        <tr>
+            <th>Cuota</th>
+            <th>Fecha</th>
+            <th>Saldo</th>
+            <th>Amoritzacion</th>
+            <th>Interes</th>
+            <th>Seguro Desgrvamen</th>
+            <th>Seguro Vehiculo</th>
+            <th>Comisiones</th>
+            <th>Cuota</th>
+        </tr>
+    </thead>
     @{ 
         SimuladorsController con = (SimuladorsController)this.ViewContext.Controller;
         DateTime fecha = DateTime.Now;
@@ -29,49 +31,76 @@
         float comision = 10;
         double cuota=0;
         double amortizacion;
-
+        double sum_Cuota = 0;
+        double sum_Amortizacion = 0;
+        double sum_SeguroDesg = 0;
+        double sum_Interes = 0;
+        double sum_Comision=0;
     }
-    @for (int i = 1; i < Model.NCuotas + 3; i++)
+    <tbody>
 
-    {
+        @for (int i = 1; i < Model.NCuotas + 2; i++)
+
         {
-            fecha = fecha.AddMonths(1);
-            diasMes = DateTime.DaysInMonth(fecha.Year, fecha.Month);
-            interes = con.calcularInteresMensual(Model, diasMes, saldo);
-            segDesg = con.calcularSeguroDesgMensual(Model, diasMes, saldo);
-            if (i == Model.NCuotas + 1)
             {
-                cuota = Model.montoDelCredito * Model.por_cuotaFinal;
-                amortizacion = saldo;
-            }
-            else
-            {
-                if (i == 1)
+                fecha = fecha.AddMonths(1);
+                diasMes = DateTime.DaysInMonth(fecha.Year, fecha.Month);
+                interes = con.calcularInteresMensual(Model, diasMes, saldo);
+                segDesg = con.calcularSeguroDesgMensual(Model, diasMes, saldo);
+                if (i == Model.NCuotas + 1)
                 {
-                    cuota = con.calcularAnualidad(Model, diasMes) + comision +/* con.ajustarAnualidad(Model,diasMes)+*/segDesg + interes;
-
+                    cuota = Model.montoDelCredito * Model.por_cuotaFinal;
+                    amortizacion = saldo;
                 }
+                else
+                {
+                    if (i == 1)
+                    {
+                        cuota = con.calcularAnualidad(Model, diasMes) + comision + /*con.ajustarAnualidad(Model, diasMes) +*/ segDesg + interes;
 
-                amortizacion = cuota - interes-comision-segDesg;
+                    }
+
+                    amortizacion = cuota - interes - comision - segDesg;
+                }
+                //  saldo = con.
+
+                sum_Amortizacion += amortizacion;
+                sum_Cuota += cuota;
+                sum_SeguroDesg += segDesg;
+                sum_Interes += interes;
+                sum_Comision += comision;
             }
-            //  saldo = con.
+            <tr>
+                <td>@i</td>
+                <td>@fecha.ToShortDateString()</td>
+                <td>@Math.Round(saldo, 2).ToString("C")</td>
+                <td>@Math.Round(amortizacion, 2).ToString("C")</td>
+                <td>@Math.Round(interes, 2).ToString("C")</td>
+                <td>@Math.Round(segDesg, 2).ToString("C")</td>
+                <td>S/.0.00</td>
+                <td>@Math.Round(comision, 2).ToString("C")</td>
+                <td>@Math.Round(cuota, 2).ToString("C")</td>
 
-
+            </tr>
+            {
+                saldo = saldo - amortizacion;
+            }
         }
-        <tr>
-            <td>@i</td>
-            <td>@fecha</td>
-            <td>@Math.Round(saldo, 2)</td>
-            <td>@Math.Round(amortizacion, 2)</td>
-            <td>@Math.Round(interes, 2)</td>
-            <td>@Math.Round(segDesg, 2)</td>
-            <td>0.00</td>
-            <td>@Math.Round(comision, 2)</td>
-            <td>@Math.Round(cuota, 2)</td>
-        </tr>
-        {
-            saldo = saldo - amortizacion;
-        }
-    }
+    </tbody>
 
 </table>
+<table>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td> @Math.Round(sum_Amortizacion, 2)</td>
+        <td> @Math.Round(sum_Interes, 2)</td>
+        <td> @Math.Round(sum_SeguroDesg, 2)</td>
+        <td> 0.00</td>
+        <td> @Math.Round(sum_Comision, 2)</td>
+        <td> @Math.Round(sum_Cuota, 2)</td>
+
+    </tr>
+</table>
+@Html.ActionLink("Ir al menu", "Index", new { id = Model.IdCliente })

@@ -8,79 +8,64 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Crear nueva simulación", "Create", new { id = ViewBag.id})
+    @Html.ActionLink("Crear nueva simulación", "Create", new { id = ViewBag.IdCliente })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.plazo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tipoSeguro)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tipoCuotaIncial)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.montoDelCredito)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.val_CuotaIncial)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NCuotas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.por_CuotaIncial)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.por_SeguroDesgravamen)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tea)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+<table class="responsive-table hoverable bordered">
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.plazo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.tipoSeguro)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.tipoCuotaIncial)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.montoDelCredito)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.val_CuotaIncial)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NCuotas)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.por_CuotaIncial)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.por_SeguroDesgravamen)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.tea)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.SimuladorID, idC = ViewBag.id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.SimuladorID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.SimuladorID }) |
-                @Html.ActionLink("Cronograma", "Cronograma", new { id = item.SimuladorID })
-
-
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.plazo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tipoSeguro)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tipoCuotaIncial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.montoDelCredito)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.por_SeguroDesgravamen)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tea)
+            </th>
+            <th></th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.NCuotas
+                </td>
+                <td>
+                    @item.tipoSeguro
+                </td>
+                <td>
+                    @item.val_CuotaIncial.ToString("C")
+                </td>
+                <td>
+                    @item.montoDelCredito.ToString("C")
+                </td>
+                <td>
+                    @item.por_SeguroDesgravamen.ToString("P")
+                </td>
+                <td>
+                    @item.tea.ToString("P")
+                </td>
+                <td>
 
+                    @Html.ActionLink("Edit","Edit", new { id = item.SimuladorID, idC = ViewBag.IdCliente })|
+                    @Html.ActionLink("Delete", "Delete", new { id = item.SimuladorID }) |
+                    @Html.ActionLink("Cronograma", "Cronograma", new { id = item.SimuladorID })
+                    <a href="@Url.Action("Edit","Simuladors", new { id = item.SimuladorID, idC = ViewBag.IdCliente })"><i class="material-icons">add</i></a>
+
+
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>

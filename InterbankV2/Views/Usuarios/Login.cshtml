@@ -6,28 +6,23 @@
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true, "Login failed. Check your login details.");
-    <div>
-        <fieldset>
-            <legend>Login</legend>
-            <div class="editor-label">
-                @Html.LabelFor(u => u.UserName)
+    <div class="row">
+            <h3>Login</h3>
+            <div class="input-field col s12 m6">
+                    @Html.TextBoxFor(u => u.UserName, htmlAttributes: new { @class="validate", @type="text" })
+                   @Html.LabelFor(u => u.UserName)
+                    @Html.ValidationMessageFor(u => u.UserName)
             </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(u => u.UserName)
-                @Html.ValidationMessageFor(u => u.UserName)
-            </div>
-            <div class="editor-label">
+
+            <div class="input-field col s12 m6">
                 @Html.LabelFor(u => u.Password)
-            </div>
-            <div class="editor-field">
                 @Html.PasswordFor(u => u.Password)
                 @Html.ValidationMessageFor(u => u.Password)
             </div>
-            <div class="editor-label">
-                @Html.CheckBoxFor(u => u.RememberMe)
-                @Html.LabelFor(u => u.RememberMe)
-            </div>
-            <input type="submit" value="Log In" />
-        </fieldset>
+        <button class="btn waves-effect waves-light" type="submit" name="action">
+            Login
+            <i class="material-icons">send</i>
+        </button>
+            @Html.ActionLink("Crear nueva cuenta", "Create") 
     </div>
 }
